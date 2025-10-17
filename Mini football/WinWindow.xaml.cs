@@ -12,13 +12,13 @@ namespace Mini_football
         public bool UserConfirmedExit   { get; private set; }
         public bool UserConfirmedRestart { get; private set; }
 
-        public WinWindow(string playerId)
+        public WinWindow(string message)
         {
             InitializeComponent();
             UserConfirmedExit = false;
 
-            // Postavimo tekst koji prikazuje ko je pobedio
-            winnerMessage.Text = $"{playerId} je pobedio!";
+            // Postavimo tekst koji prikazuje rezultat partije
+            winnerMessage.Text = message;
         }
 
         private void MenuButton_Click(object sender, RoutedEventArgs e)

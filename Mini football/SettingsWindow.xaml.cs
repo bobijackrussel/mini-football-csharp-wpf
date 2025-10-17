@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Mini_football.Models;
 
 namespace Mini_football
 {
     public partial class SettingsWindow : Window
     {
-        private Dictionary<string, Key> assignedKeys = new Dictionary<string, Key>();
-        private Button activeButton = null;
-        private GameSettings gameSettings;
+        private readonly HashSet<Key> assignedKeys = new();
+        private Button? activeButton;
+        private readonly GameSettings gameSettings;
 
         public SettingsWindow(GameSettings settings)
         {
@@ -19,18 +22,26 @@ namespace Mini_football
             InitializeControls();
         }
 
-         private void InitializeControls()
+        private void InitializeControls()
         {
-            foreach (var control in gameSettings.Player1Controls)
+            assignedKeys.Clear();
+
+            foreach (var binding in gameSettings.Player1Controls.Bindings)
             {
-                Button button = this.FindName($"Player1_{control.Key}Button") as Button;
-                if (button != null) button.Content = control.Value.ToString();
+                if (TryFindButton("Player1", binding.Key, out var button))
+                {
+                    button.Content = GetKeySymbol(binding.Value);
+                }
+                assignedKeys.Add(binding.Value);
             }
 
-            foreach (var control in gameSettings.Player2Controls)
+            foreach (var binding in gameSettings.Player2Controls.Bindings)
             {
-                Button button = this.FindName($"Player2_{control.Key}Button") as Button;
-                if (button != null) button.Content = control.Value.ToString();
+                if (TryFindButton("Player2", binding.Key, out var button))
+                {
+                    button.Content = GetKeySymbol(binding.Value);
+                }
+                assignedKeys.Add(binding.Value);
             }
         }
 
@@ -42,63 +53,54 @@ namespace Mini_football
             }
 
             activeButton = sender as Button;
-            activeButton.Background = Brushes.Gray; 
-            this.PreviewKeyDown += SettingsWindow_PreviewKeyDown;
-            this.MouseDown += SettingsWindow_MouseDown;
+            if (activeButton == null)
+            {
+                return;
+            }
+
+            activeButton.Background = Brushes.Gray;
+            PreviewKeyDown += SettingsWindow_PreviewKeyDown;
+            MouseDown += SettingsWindow_MouseDown;
         }
 
-        // Povratak na StartMenu
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            //gameSettings.SaveSettings();
-            var startMenu = new StartMenu();
-            this.Close();
+            Close();
         }
 
-        // Obrada unosa sa tastature za aktivno dugme
         private void SettingsWindow_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (activeButton == null) return;
+            if (activeButton == null)
+            {
+                return;
+            }
 
-            Key pressedKey = e.Key;
+            var pressedKey = e.Key;
 
-            if (assignedKeys.ContainsValue(pressedKey))
+            if (!TryParseButton(activeButton.Name, out var playerIndex, out var action))
+            {
+                return;
+            }
+
+            var currentKey = GetCurrentKey(playerIndex, action);
+            if (assignedKeys.Contains(pressedKey) && pressedKey != currentKey)
             {
                 MessageBox.Show("Ovaj taster je već zauzet. Izaberite drugi.");
                 return;
             }
 
-            // Ažuriranje teksta na dugmetu
-            activeButton.Content = pressedKey.ToString();
-            assignedKeys[activeButton.Name] = pressedKey;
+            assignedKeys.Remove(currentKey);
+            assignedKeys.Add(pressedKey);
 
-            // Ažuriranje gameSettings u zavisnosti od dugmeta koje se ažurira
-            UpdateGameSettings(activeButton.Name, pressedKey);
-            //gameSettings.SaveSettings();
-            
+            activeButton.Content = GetKeySymbol(pressedKey);
+            UpdateGameSettings(playerIndex, action, pressedKey);
+
             activeButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#333333"));
             activeButton = null;
-            this.PreviewKeyDown -= SettingsWindow_PreviewKeyDown;
-            this.MouseDown -= SettingsWindow_MouseDown;
+            PreviewKeyDown -= SettingsWindow_PreviewKeyDown;
+            MouseDown -= SettingsWindow_MouseDown;
         }
 
-        // Ažuriraj gameSettings prema dugmetu koje je aktivno
-        private void UpdateGameSettings(string buttonName, Key key)
-        {
-            if (buttonName.StartsWith("Player1_"))
-            {
-                string control = buttonName.Replace("Player1_", "").Replace("Button", "");
-                gameSettings.Player1Controls[control] = key;
-            }
-            else if (buttonName.StartsWith("Player2_"))
-            {
-                string control = buttonName.Replace("Player2_", "").Replace("Button", "");
-                gameSettings.Player2Controls[control] = key;
-            }
-        }
-       
-
-        // Obrada klika mišem izvan aktivnog dugmeta za otkazivanje unosa
         private void SettingsWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (activeButton != null)
@@ -107,8 +109,81 @@ namespace Mini_football
                 activeButton = null;
             }
 
-            this.PreviewKeyDown -= SettingsWindow_PreviewKeyDown;
-            this.MouseDown -= SettingsWindow_MouseDown;
+            PreviewKeyDown -= SettingsWindow_PreviewKeyDown;
+            MouseDown -= SettingsWindow_MouseDown;
+        }
+
+        private bool TryFindButton(string playerPrefix, PlayerAction action, out Button? button)
+        {
+            button = FindName($"{playerPrefix}_{action}Button") as Button;
+            return button != null;
+        }
+
+        private bool TryParseButton(string buttonName, out int playerIndex, out PlayerAction action)
+        {
+            playerIndex = 0;
+            action = PlayerAction.Up;
+
+            if (string.IsNullOrWhiteSpace(buttonName))
+            {
+                return false;
+            }
+
+            var parts = buttonName.Split('_');
+            if (parts.Length < 2)
+            {
+                return false;
+            }
+
+            if (!parts[0].StartsWith("Player", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            if (!int.TryParse(parts[0].Substring("Player".Length), out playerIndex))
+            {
+                return false;
+            }
+
+            var actionName = parts[1].Replace("Button", string.Empty);
+            return Enum.TryParse(actionName, out action);
+        }
+
+        private Key GetCurrentKey(int playerIndex, PlayerAction action)
+        {
+            return playerIndex switch
+            {
+                1 => gameSettings.Player1Controls[action],
+                2 => gameSettings.Player2Controls[action],
+                _ => Key.None
+            };
+        }
+
+        private void UpdateGameSettings(int playerIndex, PlayerAction action, Key key)
+        {
+            switch (playerIndex)
+            {
+                case 1:
+                    gameSettings.Player1Controls[action] = key;
+                    break;
+                case 2:
+                    gameSettings.Player2Controls[action] = key;
+                    break;
+            }
+        }
+
+        private static string GetKeySymbol(Key key)
+        {
+            return key switch
+            {
+                Key.Left => "←",
+                Key.Right => "→",
+                Key.Up => "↑",
+                Key.Down => "↓",
+                Key.Enter => "⏎",
+                Key.Space => "␣",
+                _ => key.ToString()
+            };
         }
     }
 }

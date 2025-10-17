@@ -26,11 +26,16 @@
                     ToolTip="Pause Game" BorderThickness="0" Click="pauseButton_Click"/>
 
             <!-- Semafor - centar -->
-            <Border Width="100" Height="40" Canvas.Left="350" Canvas.Top="5"
+            <Border Width="160" Height="40" Canvas.Left="320" Canvas.Top="5"
                     Background="Black" CornerRadius="10" BorderBrush="White" BorderThickness="2">
-                <Label Name="scoreboard" Content="0 - 0" 
-                       Foreground="White" FontSize="16" FontWeight="Bold"
-                       HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4,0">
+                    <Label Name="scoreboard" Content="0 - 0"
+                           Foreground="White" FontSize="16" FontWeight="Bold"
+                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <Label Name="timerLabel" Content="00:00" Margin="12,0,0,0"
+                           Foreground="White" FontSize="16" FontWeight="Bold"
+                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                </StackPanel>
             </Border>
 
             <!-- Dugme za mute - desna strana -->
