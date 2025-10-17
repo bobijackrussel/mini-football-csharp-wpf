@@ -1,0 +1,50 @@
+﻿<Window x:Class="Mini_football.StartMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Mini Football - Start Menu" Height="500" Width="800"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" Background="Black" AllowsTransparency="True" >
+
+    <Window.Resources>
+        <!-- Animacija pozadinske slike -->
+        <Storyboard x:Key="BackgroundAnimation" RepeatBehavior="Forever" AutoReverse="True">
+            <DoubleAnimation Storyboard.TargetName="bgImageTranslate" Storyboard.TargetProperty="X"
+                             From="0" To="-250" Duration="0:0:4" />
+            <DoubleAnimation Storyboard.TargetName="bgImageTranslate" Storyboard.TargetProperty="Y"
+                             From="0" To="-250" Duration="0:0:4" />
+        </Storyboard>
+
+    </Window.Resources>
+
+    <Grid MouseDown="Grid_MouseDown">
+        <!-- Pozadinska slika -->
+        <Image x:Name="backgroundImage" Source=".\img\pitch\pitch1.png" Stretch="UniformToFill" Opacity="0.5" Width="800" Height="501">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1.5" ScaleY="1.5" />
+                    <TranslateTransform x:Name="bgImageTranslate" />
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+
+        <!-- Logo -->
+        <Image Source=".\img\else\smLogo2.png" Width="450" Height="600"
+               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0"/>
+
+        <!-- Horizontalni meni dugmadi -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,330,0,0">
+            <Button Content="Play" Style="{StaticResource PlayButtonStyle}" Click="PlayButton_Click"/>
+            <Button Content="Settings" Style="{StaticResource MenuButtonStyle}" Click="SettingsButton_Click"/>
+            <Button Content="Quit" Style="{StaticResource QuitButtonStyle}" Click="QuitButton_Click"/>
+        </StackPanel>
+
+        <!-- Autor teksta -->
+        <TextBlock Text="Click to change pitch." Foreground="Gray" HorizontalAlignment="Center"
+                   VerticalAlignment="Bottom" Margin="0,0,0,20"/>
+    </Grid>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource BackgroundAnimation}" />
+        </EventTrigger>
+    </Window.Triggers>
+</Window>
