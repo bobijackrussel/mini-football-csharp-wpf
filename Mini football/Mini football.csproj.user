@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
@@ -7,54 +7,51 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="ConfirmQuitWindow.xaml.cs">
+    <Compile Update="Views/Dialogs/ConfirmQuitWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="helper.xaml.cs">
+    <Compile Update="Views/Loading/LoadingScreen.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="LoadingScreen.xaml.cs">
+    <Compile Update="Views/Dialogs/PauseWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="PauseWindow.xaml.cs">
+    <Compile Update="Views/Settings/SettingsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="SettingsWindow.xaml.cs">
+    <Compile Update="Views/Menus/StartMenu.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="StartMenu.xaml.cs">
+    <Compile Update="Views/Game/MainWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="WinWindow.xaml.cs">
+    <Compile Update="Views/Dialogs/WinWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="ConfirmQuitWindow.xaml">
+    <Page Update="Views/Dialogs/ConfirmQuitWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="helper.xaml">
+    <Page Update="Views/Loading/LoadingScreen.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="LoadingScreen.xaml">
+    <Page Update="Views/Game/MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="MainWindow.xaml">
+    <Page Update="Views/Dialogs/PauseWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="PauseWindow.xaml">
+    <Page Update="Views/Settings/SettingsWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="SettingsWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="StartMenu.xaml">
+    <Page Update="Views/Menus/StartMenu.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="WinWindow.xaml">
+    <Page Update="Views/Dialogs/WinWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

@@ -1,9 +1,9 @@
-﻿<Window x:Class="Mini_football.MainWindow"
+<Window x:Class="Mini_football.Views.Game.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Mini_football"
+        xmlns:local="clr-namespace:Mini_football.Views.Game"
         mc:Ignorable="d"
         Title="Mini football" Height="500" Width="800"
         KeyDown="Window_KeyDown"
@@ -26,11 +26,16 @@
                     ToolTip="Pause Game" BorderThickness="0" Click="pauseButton_Click"/>
 
             <!-- Semafor - centar -->
-            <Border Width="100" Height="40" Canvas.Left="350" Canvas.Top="5"
+            <Border Width="160" Height="40" Canvas.Left="320" Canvas.Top="5"
                     Background="Black" CornerRadius="10" BorderBrush="White" BorderThickness="2">
-                <Label Name="scoreboard" Content="0 - 0" 
-                       Foreground="White" FontSize="16" FontWeight="Bold"
-                       HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4,0">
+                    <Label Name="scoreboard" Content="0 - 0"
+                           Foreground="White" FontSize="16" FontWeight="Bold"
+                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <Label Name="timerLabel" Content="00:00" Margin="12,0,0,0"
+                           Foreground="White" FontSize="16" FontWeight="Bold"
+                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                </StackPanel>
             </Border>
 
             <!-- Dugme za mute - desna strana -->

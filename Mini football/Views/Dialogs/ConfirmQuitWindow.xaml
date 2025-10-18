@@ -1,22 +1,18 @@
-﻿<Window x:Class="Mini_football.PauseWindow"
+<Window x:Class="Mini_football.Views.Dialogs.ConfirmQuitWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Mini_football"
-        mc:Ignorable="d"
-            Title="Potvrda" Height="230" Width="500" 
-    WindowStartupLocation="CenterOwner" 
-    WindowStyle="None" 
-    Background="Transparent" 
-    AllowsTransparency="True">
+        Title="Potvrda" Height="230" Width="500" 
+        WindowStartupLocation="CenterOwner" 
+        WindowStyle="None" 
+        Background="Transparent" 
+        AllowsTransparency="True">
 
     <Border Background="#444444" CornerRadius="10" Padding="20" BorderBrush="#c41b08" BorderThickness="2">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <!-- Tekst za potvrdu -->
-            <TextBlock Text="Da li zaista želite da prekinete meč?" 
-                   Foreground="White" FontSize="18" 
-                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
+            <TextBlock Text="Da li zaista želite da izađete iz igre?" 
+                       Foreground="White" FontSize="18" 
+                       HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
             <!-- Dugmad za potvrdu i odustajanje -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >

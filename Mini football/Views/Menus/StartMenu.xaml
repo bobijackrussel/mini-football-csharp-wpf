@@ -1,4 +1,4 @@
-﻿<Window x:Class="Mini_football.StartMenu"
+<Window x:Class="Mini_football.Views.Menus.StartMenu"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Mini Football - Start Menu" Height="500" Width="800"
@@ -36,6 +36,28 @@
             <Button Content="Settings" Style="{StaticResource MenuButtonStyle}" Click="SettingsButton_Click"/>
             <Button Content="Quit" Style="{StaticResource QuitButtonStyle}" Click="QuitButton_Click"/>
         </StackPanel>
+
+        <!-- Panel sa izborom moda i lopte -->
+        <Border Background="#66000000" CornerRadius="8" Padding="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,0">
+            <StackPanel Width="200">
+                <TextBlock Text="Izaberi mod" Foreground="White" FontSize="16" FontWeight="Bold"/>
+                <ComboBox x:Name="modeComboBox" SelectionChanged="ModeComboBox_SelectionChanged"
+                          Foreground="White" Background="#222" BorderBrush="White" Margin="0,8,0,0"/>
+
+                <TextBlock Text="Izaberi loptu" Foreground="White" FontSize="16" FontWeight="Bold" Margin="0,8,0,0"/>
+                <ComboBox x:Name="ballComboBox" SelectionChanged="BallComboBox_SelectionChanged"
+                          Foreground="White" Background="#222" BorderBrush="White" DisplayMemberPath="Name" Margin="0,8,0,0"/>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse Width="40" Height="40" Fill="White" Stroke="White" StrokeThickness="1">
+                        <Ellipse.Fill>
+                            <ImageBrush x:Name="ballPreview" ImageSource=".\img\ball\ball2.png" Stretch="Uniform"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <TextBlock Text="Klikni na pozadinu za promjenu terena" Foreground="White" TextWrapping="Wrap" Width="120" FontSize="12" Margin="8,0,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
 
         <!-- Autor teksta -->
         <TextBlock Text="Click to change pitch." Foreground="Gray" HorizontalAlignment="Center"
